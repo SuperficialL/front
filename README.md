@@ -1,16 +1,20 @@
-# front
+# 前端博客项目
 
-## Project setup
+## 介绍
+
+本项目基于Vue全家桶开发的个人博客系统,采用的技术栈为 Webpack + Vue + Vuex + axios + Vue-router + Sass + ES6,整个项目前后端分离,前端使用Vue全家桶渲染,后端博客项目项目采用django + xadmin + djangoUeditor + restframework + mysql地址为https://github.com/SuperficialL/personalBlog
+
+## 创建项目并安装包
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 打包
 ```
 npm run build
 ```
