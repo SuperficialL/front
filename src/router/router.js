@@ -5,6 +5,8 @@ import Detail from '../views/Detail'
 export default new Router({
   // mode: 'history',
   base: process.env.BASE_URL,
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'active',
   routes: [
     {
       path: '/',
@@ -13,6 +15,31 @@ export default new Router({
       meta: {
         keepAlive: false
       }
+    },
+    {
+      path: '/page',
+      name: 'page',
+      component: Home
+    },
+    {
+      path: '/system',
+      name: 'system',
+      component: Home
+    },
+    {
+      path: '/database',
+      name: 'database',
+      component: Home
+    },
+    {
+      path: '/linux',
+      name: 'linux',
+      component: Home
+    },
+    {
+      path: '/program',
+      name: 'program',
+      component: Home
     },
     {
       path: '/detail/:id',

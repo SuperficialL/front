@@ -247,4 +247,10 @@
     }
   }
 
+  @media screen and (max-width: 768px) {
+    .sidebar {
+      display: none;
+    }
+  }
+
 </style>

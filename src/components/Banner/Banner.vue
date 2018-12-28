@@ -1,6 +1,6 @@
 <template>
   <div class="slide">
-    <el-carousel :interval="5000" arrow="hover" height="200px" :loop=true>
+    <el-carousel :interval="5000" height="300px">
       <el-carousel-item type="card" v-for="(item,index) in bannerList" :key="index">
         <img :src="item.img_url" alt="">
       </el-carousel-item>
@@ -10,6 +10,7 @@
 
 <script>
   import { mapState } from 'vuex'
+
   export default {
     name: 'Banner',
     computed: {
@@ -17,16 +18,19 @@
         bannerList: state => state.home.bannerList
       })
     },
-    methods: {
-  }
+    methods: {}
   }
 </script>
 
 <style lang="scss" scoped>
   .slide {
-    width: 100%;
+    max-width: 100%;
     overflow: hidden;
     box-sizing: border-box;
     border: 1px solid #ddd;
+    img {
+      max-width: 100%;
+      height: 100%;
+    }
   }
 </style>

@@ -6,15 +6,15 @@ function resolve(dir) {
 
 module.exports = {
   // 基本路径
-  baseUrl: '',
+  baseUrl: '/',
   // 输出文件目录
   outputDir: 'dist',
   // eslint-loader是否在保存时检查
   lintOnSave: true,
   // webpack-dev-server 相关配置
     devServer: {
-    host: 'localhost',
-    port: 8080,
+    // host: 'localhost',
+    // port: 8000,
     proxy: 'http://localhost:8000'
     // 设置代理
     // proxy: {

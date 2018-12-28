@@ -7,22 +7,22 @@ export default {
 
   // 获取导航菜单
   getMenu (params) {
-    return axios.get(`/api/category`, params)
+    return axios.get(`/navigationLink`, params)
   },
 
   // 获取轮播
   getIndexBanner (params) {
-    return axios.get(`/api/carousel`, params)
+    return axios.get(`/carousel`, params)
   },
 
   // 获取文章列表
   getArticleList (params) {
-    return axios.get(`/api/articleList`, params)
+    return axios.get(`blog/articleList`, params)
   },
 
   // 获取文章详情页
   getArticleDetail (params) {
-    return axios.get(`/api/articleList/${params.id}`, params)
+    return axios.get(`api/articleList/${params.id}`, params)
   },
 
   // 获取评论列表

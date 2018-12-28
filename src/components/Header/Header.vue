@@ -2,49 +2,35 @@
   <header class="header">
     <div class="logo">
       <h1>
-        <a class="" href="">Superficial Blog</a>
+        Superficial Blog
         <small>个人博客</small>
       </h1>
+      <i class="icon icon-ego-menu" @click="showMenu"></i>
+      <i class="el-icon-search" @click="showSearch"></i>
     </div>
     <div class="header-inner">
-      <nav class="nav-wrapper">
+      <nav class="nav-wrapper" :class="{show: isShowNav}">
         <ul class="nav-menu">
-          <li class="nav-item" :class="{ active: isActive === show }">
-            <a class="nav-link" href="/">首页</a>
-          </li>
-          <li class="nav-item"
-              v-for="(root,index) in menu"
-              :key="index"
-              :class="{ active: Index === index }"
-              @click="getActive(index)"
+          <li v-for="root in navigationLink"
+              :key="root.id"
+              class="nav-item"
           >
-            <a class="nav-link" href="#">
+            <router-link
+              active-class="active"
+              :to="{ name:root.url }"
+            >
               {{ root.name }}
-            </a>
-            <ul class="sub-menu">
-              <li class="sub-menu-item"
-                  v-for="(child,c_index) in root.sub_cat"
-                  :key="c_index"
-              >
-                <a href="#">
-                  {{ child.name }}
-                </a>
-              </li>
-            </ul>
+            </router-link>
           </li>
         </ul>
       </nav>
-      <div class="search-wrapper">
-        <div class="search-box">
-          <input type="text"
-                 v-model="keywords"
-                 @keyup.enter="search"
-                 placeholder="请输入关键字"
-          >
-        </div>
-        <div class="search" @click="search">
-          <i class="el-icon-search"></i>
-        </div>
+      <div class="search-box" :class="{show: isShowSearch}">
+        <input type="text"
+               v-model="keywords"
+               @keyup.enter="search"
+               placeholder="请输入关键字"
+        >
+        <i class="el-icon-search"></i>
       </div>
     </div>
   </header>
@@ -59,26 +45,37 @@
       return {
         Index: 0,
         isActive: true,
-        show: true,
-        keywords: ''
+        keywords: '',
+        isShowNav: false,
+        isShowSearch: false
       }
     },
     computed: {
       ...mapState({
-        menu: state => state.home.menu
+        navigationLink: state => state.home.navigationLink
       })
     },
     created () {
-      // 获取菜单
-      // this.$store.dispatch('getMenu')
-      // this.getMenu()
     },
     methods: {
-      // ...mapActions(['getMenu']),
       getActive (currentIndex) {
+        // 获取切换导航索引
         this.Index = currentIndex
       },
       search () {
+      },
+      showMenu () {
+        // 显示隐藏手机端菜单
+        if (this.isShowSearch) {
+          this.isShowSearch = !this.isShowSearch
+        }
+        this.isShowNav = !this.isShowNav
+      },
+      showSearch () {
+        if (this.isShowNav) {
+          this.isShowNav = !this.isShowNav
+        }
+        this.isShowSearch = !this.isShowSearch
       }
     }
   }
@@ -90,101 +87,114 @@
   .header {
     position: relative;
     width: 100%;
-    flex: 0 0 auto;
+    max-width: 1260px;
+    margin: 0 auto;
     .logo {
-      height: 60px;
-      color: #f60;
+      h1 {
+        height: 60px;
+        line-height: 60px;
+        color: #f60;
+        text-align: center;
+      }
+      i {
+        display: none;
+      }
     }
     .header-inner {
       display: flex;
-      max-width: 1260px;
-      margin: 0 auto;
       justify-content: space-between;
-      border-bottom: 4px solid $background-color;
-      background-color: #4a4a4a;
+      /*background-color: rgba(85, 85, 85, .5);*/
       .nav-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
+        transition: all .5s ease;
         .nav-menu {
           display: flex;
-          > .nav-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            transition: .5s;
-            &.active {
+          width: 60%;
+          .nav-item {
+            transition: all .5s ease-in-out;
+            a {
+              padding: 5px 15px;
+            }
+            .active {
               background-color: $background-color;
-            }
-            &:hover .sub-menu {
-              display: block;
-            }
-            .nav-link {
-              padding: 15px 20px;
-              text-decoration: none;
-              color: #fff;
-              &:hover {
-                background-color: $nav-link-hover;
-              }
-            }
-            > .sub-menu {
-              display: none;
-              position: absolute;
-              top: 100%;
-              left: 50%;
-              z-index: 999;
-              min-width: 130px;
-              border-radius: 3px;
-              background-color: $background-color;
-              transform: translateX(-50%);
-              .sub-menu-item {
-                a {
-                  display: block;
-                  padding: 15px 20px;
-                  &:hover {
-                    background-color: $sub-link-hover;
-                  }
-                }
-              }
             }
           }
         }
       }
-      .search-wrapper {
+      .search-box {
+        position: relative;
         display: flex;
+        width: 180px;
+        align-items: center;
         overflow: hidden;
         transition: all .3s ease;
-        border-radius: 30px;
-        &:hover .search-box input {
-          width: 300px;
-          text-indent: 30px;
+        input {
+          width: 100%;
+          text-indent: 15px;
+          height: 100%;
+          transition: all .3s ease;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        i {
+          position: absolute;
+          right: 10px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .header {
+      .logo {
+        display: flex;
+        padding: 0 20px;
+        justify-content: space-between;
+        align-items: center;
+        i {
+          display: block;
+        }
+      }
+      .header-inner {
+        position: absolute;
+        top: 60px;
+        width: 100%;
+        z-index: 10;
+        .nav-wrapper {
+          width: 100%;
+          opacity: 0;
+          transform: translateX(-100%);
+          background-color: rgba(85, 85, 85, .5);
+
+          &.show {
+            opacity: 1;
+            transform: translateX(0px);
+          }
+          .nav-menu {
+            display: block !important;
+            width: 60%;
+            background-color: #ddd;
+          }
         }
         .search-box {
-          display: block;
-          border-radius: 5px;
-          input {
-            width: 100px;
-            text-indent: 15px;
-            height: 100%;
-            background-color: #eee;
-            transition: all .3s ease;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 0;
+          line-height: 40px;
+          transition: all .5s ease;
+          &.show {
+            height: 40px;
+            border: 1px solid #ccc;
           }
-          /*          input:focus, input:hover {
-                      width: 300px;
-                    }*/
-        }
-        .search {
-          position: relative;
-          z-index: 1;
-          padding: 15px 20px;
-          background-color: #eee;
-          cursor: pointer;
-          transition: 1s;
-          &:hover {
-            background-color: $search-bgc;
+          input {
+            width: 100%;
+          }
+          i {
+            position: absolute;
+            right: 5px;
+            width: 35px;
           }
         }
       }

@@ -1,9 +1,9 @@
 import API from '@/api/api'
 
 const state = {
+  navigationLink: [],
   blogInfo: [],
   friendLink: [],
-  menu: [],
   bannerList: [],
   articleList: [],
   totalCount: 0,
@@ -13,14 +13,14 @@ const state = {
 }
 
 const mutations = {
+  UPDATE_MENU (state, navigationLink) {
+    state.navigationLink = navigationLink
+  },
   UPDATE_BLOGINFO (state, blogInfo) {
     state.blogInfo = blogInfo.results
   },
   UPDATE_lINKS (state, friendLink) {
     state.friendLink = friendLink.results
-  },
-  UPDATE_MENU (state, menu) {
-    state.menu = menu.results
   },
   UPDATE_CATEGORY (state, category) {
     state.category = category

@@ -31,10 +31,20 @@
     .container {
       display: flex;
       justify-content: space-between;
-      width: 1260px;
+      max-width: 1260px;
       margin: 0 auto;
       .content-wrapper {
         width: 900px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .main {
+      .container {
+        .content-wrapper {
+          width: 100%;
+        }
       }
     }
   }
