@@ -237,7 +237,8 @@ blockquote, body, button, caption, dd, div, dl, dt, fieldset, figure, form, h1, 
   padding: 0; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-size: 22px; }
+  font-size: 22px;
+  font-weight: normal; }
 
 button, input, select, textarea {
   outline: 0;
@@ -259,6 +260,9 @@ img {
 
 a {
   text-decoration: none;
-  transition: .5s; }
+  transition: .5s;
+  color: #666; }
+  a:hover {
+    color: red; }
 
 /*# sourceMappingURL=common.css.map */

@@ -37,48 +37,6 @@
       </ul>
     </div>
 
-    <!-- Article Sort -->
-    <div class="widget el-tabs--card">
-      <div class="header">
-        <h4 class='title'>
-          <i class="icon icon-weibo1"></i>
-          最新文章
-          <small>Recent Article</small>
-        </h4>
-      </div>
-      <ul class="content">
-        <li>
-          <a href="#">
-            博客文章
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Article Comment -->
-    <div class="widget comment">
-      <div class="header">
-        <h4 class='title'>
-          <i class="icon icon-ego-menu"></i>
-          最新评论
-          <small>Recent Comment</small>
-        </h4>
-      </div>
-      <ul class="content">
-        <li>
-          <div class="author"></div>
-          <div class="comment">
-            <p>
-              <a href="#">评论文章</a>
-            </p>
-            <small>
-              评论人 评论于 2018-12-12 12:00:00
-            </small>
-          </div>
-        </li>
-      </ul>
-    </div>
-
     <!-- Tags -->
     <div class="widget tag-could">
       <div class="header">
@@ -94,7 +52,7 @@
             v-for="(item,index) in tags"
             :key="index"
         >
-          <a href="#">{{ item.name }}</a>
+          <router-link :to="{name: 'tag',params: {id:item.id} }">{{ item.name }}</router-link>
         </li>
       </ul>
     </div>
@@ -117,25 +75,6 @@
         </li>
       </ul>
     </div>
-
-    <!-- SiteInfo -->
-    <div class="widget site-info">
-      <div class="header">
-        <h4 class="title">
-          <i class="el-paper-clip"></i>
-          站点信息
-          <small>SiteInfo</small>
-        </h4>
-      </div>
-      <ul class="content">
-        <li>
-          <img src="#">
-          <a href="#" title="#" target="_blank">
-            轩陌
-          </a>
-        </li>
-      </ul>
-    </div>
   </aside>
 </template>
 
@@ -146,8 +85,8 @@
     name: 'Sidebar',
     computed: {
       ...mapState({
-        friendLink: state => state.home.friendLink,
-        tags: state => state.home.tags
+        friendLink: state => state.base.friendLink,
+        tags: state => state.base.tags
       })
     }
   }
@@ -241,6 +180,15 @@
             &.color-8 {
               background: #20bf6b;
             }
+          }
+        }
+      }
+      &.friend-link {
+        .content li {
+          display: flex;
+          align-items: center;
+          a {
+            display: block;
           }
         }
       }

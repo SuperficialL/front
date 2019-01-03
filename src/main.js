@@ -1,24 +1,30 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
 import App from './App.vue'
 import store from './store/store'
-import router from './router/router'
-
-import ElementUI from 'element-ui'
-
-import filters from './filters/index'
-
-// import Mock from './mock/mock'
-
+import router from './router'
+import VueHighlightJS from 'highlight.js'
+import 'highlight.js/styles/googlecode.css'
 import 'assets/scss/common.scss'
+
+// import filters from '@/utils/dateFormat'
+import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
-// Mock.start()
-Object.keys(filters).forEach(key => { Vue.filter(key, filters[key]) })
+Vue.use(ElementUI)
+
+Vue.use(VueHighlightJS)
+
+// 批量注册过滤器
+// Object.keys(filters).forEach(key => { Vue.filter(key, filters[key]) })
+
 Vue.config.productionTip = false
 
-Vue.use(VueRouter)
-Vue.use(ElementUI)
+Vue.directive('highlight', (el) => {
+  let blocks = el.querySelectorAll('pre')
+  blocks.forEach((block) => {
+    VueHighlightJS.highlightBlock(block)
+  })
+})
 
 new Vue({
   router,

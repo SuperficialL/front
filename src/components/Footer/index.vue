@@ -1,9 +1,9 @@
 <template>
   <footer class="footer">
     <div class="footer-inner">
-      <p class="card-text">Copyright © Superficial Blog All Rights Reserved.</p>
+      <p class="card-text">{{ blogInfo.footnote}}</p>
       <p>
-        <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备15011150号-2</a>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">{{ blogInfo.beian_code }}</a>
       </p>
     </div>
     <div class="back-to-end" @click="scrollToTop" :class="{ show: toTopShow }">
@@ -13,24 +13,31 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: 'Footer',
-    data() {
+    data () {
       return {
         toTopShow: false
       }
     },
+    computed: {
+      ...mapState({
+        blogInfo: state => state.base.blogInfo
+      })
+    },
     methods: {
-      handleScroll() {
+      handleScroll () {
         // 首先修改相对滚动位置
         this.scrollTop = this.scrollTop = window.pageYOffset || document.body.scrollTop
         this.toTopShow = this.scrollTop > 300
       },
-      scrollToTop() {
+      scrollToTop () {
         let timer = null
         let _that = this
         cancelAnimationFrame(timer)
-        timer = requestAnimationFrame(function fn() {
+        timer = requestAnimationFrame(function fn () {
           if (_that.scrollTop > 0) {
             _that.scrollTop -= 50
             // 然后修改这里实现动画滚动效果
@@ -43,13 +50,13 @@
         })
       }
     },
-    mounted() {
-        this.$nextTick(
-          function () {
-            window.addEventListener('scroll', this.handleScroll)
-          }
-        )
-      }
+    mounted () {
+      this.$nextTick(
+        function () {
+          window.addEventListener('scroll', this.handleScroll)
+        }
+      )
+    }
   }
 </script>
 
@@ -89,7 +96,7 @@
       i {
         font-size: 30px;
       }
-      &.active{
+      &.active {
         right: 30px;
       }
     }

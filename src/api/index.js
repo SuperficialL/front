@@ -1,83 +1,79 @@
-// import axios from 'axios'
-//
-// export default {
-//   // 获取公用信息
-//   getGlobalInfomation (params) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/settings`,
-//       params
-//     })
-//   },
-//
-//   // 获取导航菜单
-//   getMenu (params) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/category`,
-//       params
-//     })
-//   },
-//
-//   // 获取轮播
-//   getBanner (params) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/carousel`,
-//       params
-//     })
-//   },
-//
-//   // 获取文章列表页
-//   getArticleList (params) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/article`,
-//       params
-//     })
-//   },
-//
-//   // 获取文章详情页
-//   getArticleDetail (pk) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/article/${pk}`
-//     })
-//   },
-//
-//   // 获取评论列表
-//   getCommentList (params) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/comment`,
-//       params
-//     })
-//   },
-//
-//   // 发表评论
-//   updateComment (data) {
-//     return axios({
-//       url: `${process.env.baseUrl}/api/comment`,
-//       method: 'POST',
-//       data
-//     })
-//   }
-// }
-//
-// export const getBanner = params => {
-//   // 封装一个函数，名为 getBanner
-//   return axios.get(`/api/carousel`, {
-//     // 请求路径
-//     params: params
-//   })
-// }
-//
-// export const getArticle = params => {
-//   // 封装一个函数，名为 getBanner
-//   return axios.get(`/api/article`, {
-//     // 请求路径
-//     params: params
-//   })
-// }
-//
-// export const getMenu = params => {
-//   // 封装一个函数，名为 getMenu
-//   return axios.get(`/api/category`, {
-//     // 请求路径
-//     params: params
-//   })
-// }
+import axios from '@/utils/axios'
+
+export default {
+  // 获取站点信息
+  getSiteInfo (params) {
+    return axios({
+      url: `/siteinfo`,
+      // 这里面的api可以不需要的删了你操作一下
+      params
+    })
+  },
+
+  // 获取导航菜单
+  getMenu (params) {
+    return axios({
+      url: `category`,
+      params
+    })
+  },
+
+  // 获取轮播
+  getIndexBanner (params) {
+    return axios({
+      url: `carousel`,
+      params
+    })
+  },
+
+  // 获取分类下文章列表
+  getCategory (params) {
+    if (params !== undefined) {
+      return axios({
+        url: `category/${params.id}`,
+        params
+      })
+    } else {
+      return axios({
+        url: `category`,
+        params
+      })
+    }
+  },
+
+  // 获取文章详情页
+  getArticleDetail (params) {
+    return axios({
+      url: `articles/${params.id}`,
+      params
+    })
+  },
+
+  // 获取友情链接
+  getFriendLink (params) {
+    return axios({
+      url: `friendLinks`,
+      params
+    })
+  },
+
+  // 获取标签集合
+  getTags (params) {
+    if (params !== undefined) {
+      return axios({
+        url: `tags/${params.id}`,
+        params
+      })
+    } else {
+      return axios({
+        url: `tags`,
+        params
+      })
+    }
+  },
+
+  // 搜索
+  search (params) {
+    return axios.get(`search`, params)
+  }
+}

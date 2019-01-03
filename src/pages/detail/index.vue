@@ -2,15 +2,27 @@
   <section class="main">
     <div class="container">
       <div class="content-wrapper">
+        <div class="content-wrapper">
+          <div class="breadcrumb">
+            <router-link :to="{path: '/'}">首页</router-link>
+            <router-link :to="{path: '/'}">首页</router-link>
+            <router-link :to="{path: '/'}">首页</router-link>
+            <span>{{ article.title }}</span>
+          </div>
+        </div>
         <article class="article">
           <div class="article-header">
             <h3 class="title">
               {{ article.title }}
             </h3>
             <div class="mate">
-            <span>
+              <span>
                 <i class="icon icon-fenlei"></i>
-                {{ article.parent_category }}null
+                {{ article.parent_category }}
+              </span>
+              <span>
+                <i class="icon icon-fenlei"></i>
+                {{ article.author }}
               </span>
               <span>
                 <i class="icon icon-shijian"></i>
@@ -33,9 +45,9 @@
                 {{ article.digest }}
               </p>
             </fieldset>
-            <div class="detail" v-html="article.body">
+            <div class="detail" v-html="article.body" v-highlight>
             </div>
-            <div class="pager">
+            <!--<div class="pager">
               <router-link :to="{name:'Detail', params:{ id: $route.params.id }}">
                 <i class="icon icon-prev"></i>
                 上一篇:Vue
@@ -44,9 +56,8 @@
                 <i class="icon icon-prev"></i>
                 上一篇:Vue
               </router-link>
-            </div>
+            </div>-->
           </div>
-          <Comment></Comment>
         </article>
       </div>
       <Sidebar></Sidebar>
@@ -54,15 +65,19 @@
   </section>
 </template>
 <script>
-  import Sidebar from '@/components/Sidebar/Sidebar'
-  import Comment from '@/components/Comment/Comment'
+  import Sidebar from '@/components/Sidebar'
   import { mapState } from 'vuex'
-  import { dateFormat } from '@/filters/dateFormat'
+  import { dateFormat } from '@/utils/dateFormat'
 
   export default {
-    name: 'Detail',
+    name: 'detail',
+    data () {
+      return {
+        id: this.$route.params.id
+      }
+    },
     created () {
-      this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.$route.params.id })
+      this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.id })
     },
     computed: {
       ...mapState({
@@ -70,20 +85,20 @@
       })
     },
     watch: {
-      $route () {
-        this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.$route.params.id })
+       '$route' () {
+        this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.id })
       }
     },
     methods: {},
     components: {
-      Sidebar,
-      Comment
+      Sidebar
     },
     filters: {
       dateFormat
     }
   }
 </script>
+
 <style lang="scss" scoped>
   .main {
     flex: 1 0 auto;

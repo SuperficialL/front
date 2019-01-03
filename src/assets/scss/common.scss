@@ -12,6 +12,7 @@ blockquote, body, button, caption, dd, div, dl, dt, fieldset, figure, form, h1, 
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 22px;
+  font-weight: normal;
 }
 
 button, input, select, textarea {
@@ -39,9 +40,8 @@ img {
 a {
   text-decoration: none;
   transition: .5s;
-
-  //&:hover {
-  //  color: #f60;
-  //}
-
+  color: #666;
+  &:hover {
+    color: red;
+  }
 }

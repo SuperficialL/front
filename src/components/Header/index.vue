@@ -11,16 +11,35 @@
     <div class="header-inner">
       <nav class="nav-wrapper" :class="{show: isShowNav}">
         <ul class="nav-menu">
-          <li v-for="root in navigationLink"
+          <li class="nav-item">
+            <router-link
+              :to="{name: 'home'}"
+              exact
+            >
+              首页
+            </router-link>
+          </li>
+          <li class="nav-item"
+              v-for="root in navigationLink"
               :key="root.id"
-              class="nav-item"
           >
             <router-link
-              active-class="active"
-              :to="{ name:root.url }"
+              :to="{name: 'category', params: { id: root.id } }"
             >
               {{ root.name }}
             </router-link>
+            <ul class="sub-menu" v-if="root.sub_cat.length">
+              <li class="sub-item"
+                  v-for="sub_cat in root.sub_cat"
+                  :key="sub_cat.id"
+              >
+                <router-link
+                  :to="{name: 'category',params: { id:sub_cat.id } }"
+                >
+                  {{ sub_cat.name }}
+                </router-link>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>
@@ -50,18 +69,15 @@
         isShowSearch: false
       }
     },
+    created() {
+      this.$store.dispatch('GET_MENU')
+    },
     computed: {
       ...mapState({
-        navigationLink: state => state.home.navigationLink
+        navigationLink: state => state.base.navigationLink
       })
     },
-    created () {
-    },
     methods: {
-      getActive (currentIndex) {
-        // 获取切换导航索引
-        this.Index = currentIndex
-      },
       search () {
       },
       showMenu () {
@@ -87,8 +103,7 @@
   .header {
     position: relative;
     width: 100%;
-    max-width: 1260px;
-    margin: 0 auto;
+    background-color: #fff;
     .logo {
       h1 {
         height: 60px;
@@ -103,16 +118,59 @@
     .header-inner {
       display: flex;
       justify-content: space-between;
-      /*background-color: rgba(85, 85, 85, .5);*/
+      align-items: center;
+      width: 1260px;
+      height: 60px;
+      margin: 0 auto;
       .nav-wrapper {
         width: 100%;
         transition: all .5s ease;
         .nav-menu {
           display: flex;
+          justify-content: space-between;
           width: 60%;
+          height: 30px;
           .nav-item {
+            display: flex;
+            position: relative;
+            align-items: center;
             transition: all .5s ease-in-out;
-            a {
+            &:hover {
+              .sub-menu {
+                display: block;
+              }
+            }
+            .sub-menu {
+              display: none;
+              position: absolute;
+              top: 30px;
+              left: 50%;
+              width: 150px;
+              z-index: 999;
+              border: 1px solid #ccc;
+              transform: translateX(-50%);
+              text-align: center;
+              &:before {
+                content: '';
+                position: absolute;
+                top: 1px;
+                border: {
+                  width: 5px;
+                  style: solid;
+                  color: transparent transparent red transparent;
+                }
+              }
+              .sub-item {
+                &:hover {
+                background-color: skyblue;
+              }
+                a {
+                  display: block;
+                  padding: 10px;
+                }
+              }
+            }
+            & > a {
               padding: 5px 15px;
             }
             .active {
@@ -125,8 +183,10 @@
         position: relative;
         display: flex;
         width: 180px;
+        height: 30px;
         align-items: center;
         overflow: hidden;
+        border: 1px solid #ccc;
         transition: all .3s ease;
         input {
           width: 100%;

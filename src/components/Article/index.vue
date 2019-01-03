@@ -4,11 +4,11 @@
              v-for="article in articleList"
              :key="article.id"
     >
-      <div class="thumbnail">
-        <router-link :to="{ name: 'detail',params: {id: article.id} }">
-          <img class="thumbnail" :src="article.img" alt="article.title">
-        </router-link>
-      </div>
+      <router-link class="thumbnail"
+                   :to="{ name: 'detail',params: {id: article.id} }"
+      >
+        <img class="thumbnail" :src="article.img" alt="article.title">
+      </router-link>
       <div class="article-inner">
         <h3 class="title">
           <router-link :to="{ name: 'detail',params: { id: article.id } }">
@@ -22,7 +22,7 @@
           <div class="meta">
               <span>
                 <i class="icon icon-fenlei"></i>
-                {{ article.parent_category }}null
+                {{ article.parent_category }}
               </span>
             <span>
                 <i class="icon icon-shijian"></i>
@@ -48,14 +48,24 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { dateFormat } from '@/filters/dateFormat'
+  import store from '@/store/store'
+  import { dateFormat } from '@/utils/dateFormat'
 
   export default {
     name: 'Article',
     computed: {
       ...mapState({
-        articleList: state => state.home.articleList
+        articleList: state => state.category.articleList
       })
+    },
+    watch: {
+      '$route' (to, from) {
+        if (to.name !== 'home') {
+          store.dispatch('GET_CATEGORY', { id: this.$route.params.id })
+        } else {
+          store.dispatch('GET_CATEGORY')
+        }
+      }
     },
     methods: {
       // ...mapActions(['getArticleList'])
@@ -70,53 +80,55 @@
 </script>
 
 <style lang="scss" scoped>
-  section.article-list-wrapper {
+  .article-list-wrapper {
     .v-enter, .v-leave-to {
       opacity: 0;
       transform: translateY(40px);
     }
+    .v-leave-to {
+      opacity: 0;
+      transform: translateY(40px);
+    }
     .v-enter-active, .v-leave-active {
-      transition: all .6s ease;
+      transition: all 2.6s ease-in-out;
     }
     .article {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border: 1px solid #ccc;
-      margin: 20px 0;
+      margin-bottom: 20px;
       padding: 10px;
-      transition: all .4s linear;
+      transition: all .4s ease;
+      &:last-child {
+        margin-bottom: 0;
+      }
       &:hover {
         box-shadow: 4px 4px 10px #e3d4ff;
-        transition: all .4s linear;
         & .thumbnail {
-          transform: scale(1.1);
+          img {
+            transform: scale(1.1);
+          }
         }
       }
       .thumbnail {
+        display: block;
         overflow: hidden;
-        height: 145px;
-        border: 1px solid transparent;
-        transition: all .4s linear;
-
+        img {
+          width: 245px;
+          height: 145px;
+          transition: all .4s linear;
+        }
       }
       .article-inner {
         position: relative;
         width: 590px;
         .title {
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
+          margin-bottom: 7px;
+          padding-bottom: 5px;
           height: 20px;
           line-height: 20px;
-          font-size: 20px;
-          font-weight: 500;
-          border-bottom: 1px solid #eee;
-          padding-bottom: 5px;
-          margin-bottom: 7px;
-          a {
-            color: #666;
-          }
+          white-space: nowrap;
         }
         .summary {
           display: -webkit-box;
@@ -134,8 +146,58 @@
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
+          margin-top: 10px;
           font-size: 12px;
           .meta {
+            span {
+              margin-right: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .article-list-wrapper {
+      background-color: #eee;
+      .article {
+        flex-wrap: wrap;
+        border: 0;
+        background-color: #fff;
+        .thumbnail {
+          width: 100%;
+          text-align: center;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .article-inner {
+          width: 100%;
+          .title {
+            margin-top: 10px;
+            text-align: center;
+          }
+          .summary {
+            height: auto;
+            margin: 10px 0;
+          }
+          .article-info {
+            flex-wrap: wrap;
+            .meta {
+              width: 100%;
+              margin-bottom: 10px;
+            }
+            a {
+              display: block;
+              width: 100%;
+              padding: 10px 0;
+              border-radius: 6px;
+              text-align: center;
+              /*color: #fff;*/
+              background-color: #eee;
+            }
           }
         }
       }

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Header></Header>
+    <Loading v-if="isLoading"></Loading>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -9,40 +10,40 @@
 </template>
 
 <script>
-  import Header from '@/components/Header/Header'
-  import Footer from '@/components/Footer/Footer'
+  import Header from '@/components/Header'
+  import Footer from '@/components/Footer'
+  import Loading from '@/components/Loading'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'App',
-    created () {
-      this.$store.dispatch('GET_MENU')
-      this.$store.dispatch('GET_ARTICLE_LIST')
-      this.$store.dispatch('GET_BANNER')
-      // this.$store.dispatch('GET_FriendLink')
-      // this.$store.dispatch('GET_TAGS')
+    computed: {
+      ...mapGetters(['isLoading'])
     },
-    methods: {},
     components: {
       Header,
-      Footer
+      Footer,
+      Loading
     }
   }
 </script>
 
 <style lang="scss">
   #app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    background-color: #f4f4f4;
   }
 
-  a {
-    display: block;
-    font-size: 14px;
-    font-weight: 200;
-    color: rgb(77, 85, 93);
-    &.isActive {
-      color: rgb(240, 20, 20)
-    }
+  .v-enter, .v-leave-to {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .v-leave-to {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .v-enter-active, .v-leave-active {
+    transition: all 2.6s ease-in-out;
   }
 </style>
