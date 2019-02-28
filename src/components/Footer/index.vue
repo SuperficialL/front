@@ -1,9 +1,11 @@
 <template>
   <footer class="footer">
     <div class="footer-inner">
-      <p class="card-text">{{ blogInfo.footnote}}</p>
+      <p class="card-text" v-if="blogInfo">{{ blogInfo.footnote }}</p>
+      <p class="card-text" v-else>Copyright © Superficial Blog All Rights Reserved.</p>
       <p>
-        <a href="http://www.miibeian.gov.cn/" target="_blank">{{ blogInfo.beian_code }}</a>
+        <a href="http://www.miibeian.gov.cn/" v-if="blogInfo" target="_blank">{{ blogInfo.beian_code }}?</a>
+        <a href="http://www.miibeian.gov.cn/" v-else target="_blank">公安备案号</a>
       </p>
     </div>
     <div class="back-to-end" @click="scrollToTop" :class="{ show: toTopShow }">
@@ -75,7 +77,7 @@
       margin: 0 auto;
       padding: 16px 20px 14px;
       text-align: center;
-      color: #aaa;
+      color: #fff;
       text-shadow: 0 -1px 0 #333;
     }
     .back-to-end {

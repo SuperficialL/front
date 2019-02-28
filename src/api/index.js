@@ -4,8 +4,7 @@ export default {
   // 获取站点信息
   getSiteInfo (params) {
     return axios({
-      url: `/siteinfo`,
-      // 这里面的api可以不需要的删了你操作一下
+      url: `siteinfo`,
       params
     })
   },
@@ -13,7 +12,7 @@ export default {
   // 获取导航菜单
   getMenu (params) {
     return axios({
-      url: `category`,
+      url: `category/`,
       params
     })
   },
@@ -27,25 +26,17 @@ export default {
   },
 
   // 获取分类下文章列表
-  getCategory (params) {
-    if (params !== undefined) {
-      return axios({
-        url: `category/${params.id}`,
-        params
-      })
-    } else {
-      return axios({
-        url: `category`,
-        params
-      })
-    }
+  getArticles (params) {
+    return axios({
+      url: `articles/`,
+      params
+    })
   },
 
   // 获取文章详情页
   getArticleDetail (params) {
     return axios({
-      url: `articles/${params.id}`,
-      params
+      url: `articles/${params.id}`
     })
   },
 
@@ -73,7 +64,28 @@ export default {
   },
 
   // 搜索
-  search (params) {
-    return axios.get(`search`, params)
+  getSearch (params) {
+    return axios({
+      url: `articles/`,
+      params
+    })
+  },
+
+  // get评论
+  getComments (params) {
+    return axios({
+      url: `comments`,
+      params
+    })
+  },
+
+  // post评论
+  postComment (params) {
+    return axios({
+      url: `comments/`,
+      method: 'POST',
+      // params
+      data: JSON.stringify(params)
+    })
   }
 }

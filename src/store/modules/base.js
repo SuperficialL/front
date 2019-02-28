@@ -3,7 +3,7 @@ import API from '@/api/index'
 const state = {
   isLoading: false,
   navigationLink: [],
-  blogInfo: [],
+  blogInfo: {},
   friendLink: [],
   tags: [],
   bannerList: []
@@ -16,13 +16,11 @@ const getters = {
 
 const mutations = {
   UPDATE_MENU (state, data) {
-    state.navigationLink = data
+    state.navigationLink = data.results
   },
   UPDATE_BlogInfo (state, blogInfo) {
-    if (blogInfo[0]) {
+    if (Array.isArray(blogInfo)) {
       state.blogInfo = blogInfo[0]
-    } else {
-      state.blogInfo = blogInfo
     }
   },
   UPDATE_BANNER (state, data) {
@@ -34,8 +32,8 @@ const mutations = {
   UPDATE_TAGS (state, tags) {
     state.tags = tags.results
   },
-  UPDATE_LOADING (state, res) {
-    state.isLoading = res
+  UPDATE_LOADING (state, response) {
+    state.isLoading = response
   }
 }
 
@@ -43,7 +41,7 @@ const actions = {
   // 获取导航栏
   GET_MENU ({ commit, state }, params) {
     return new Promise((resolve, reject) => {
-      API.getCategory(params).then((data) => {
+      API.getMenu(params).then((data) => {
         commit('UPDATE_MENU', data)
         resolve(data)
       }).catch((error) => {

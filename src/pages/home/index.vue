@@ -18,10 +18,11 @@
   export default {
     name: 'Home',
     created () {
-      // this.$store.dispatch('GET_BANNER')
-      // this.$store.dispatch('GET_FriendLink')
-      // this.$store.dispatch('GET_TAGS')
-      // this.$store.dispatch('GET_BLOGINFO')
+      this.$store.dispatch('GET_BANNER')
+      this.$store.dispatch('GET_FriendLink')
+      this.$store.dispatch('GET_TAGS')
+      this.$store.dispatch('GET_BLOGINFO')
+      this.$store.dispatch('GET_ARTICLES', {})
     },
     components: {
       Sidebar,

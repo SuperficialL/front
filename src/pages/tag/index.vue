@@ -4,8 +4,8 @@
       <div class="content-wrapper">
         <div class="breadcrumb">
           <div class="category-title">
-            <h2>当前分类: {{ category_name }}</h2>
-            <span>共 {{ articleList.length }} 篇</span>
+            <h2>当前标签: {{ $route.params.title}} </h2>
+            <span>共 {{ count }} 篇</span>
           </div>
           <p class="description">作为一个运维或者后端开发，Linux
             的常用操作是必须要熟悉的，但是话又说回来，知识是无限的，学习的精力和时间都是有限的，如何提高学习效率很重要。我的学习方式很简单，就是一句话，学以致用，换句话说就是需要用的时候才学，这样不仅学的东西对自己有用，更重要的是不容易忘记。于是，我开了这个时间线，用来记录日常工作中学到的
@@ -18,26 +18,31 @@
   </section>
 </template>
 <script>
-  import Sidebar from '@/components/Sidebar/index'
-  import Article from '@/components/Article/index'
+  import Sidebar from '@/components/Sidebar'
+  import Article from '@/components/Article'
   import { mapState } from 'vuex'
 
   export default {
     name: 'tag',
     created () {
-      this.$store.dispatch('GET_CATEGORY', { id: this.$route.params.id })
+      console.log(this.$route.params.id)
+      this.$store.dispatch('GET_ARTICLES',
+        {
+          tag: this.$route.params.id
+        }
+      )
     },
     computed: {
       ...mapState({
         articleList: state => state.category.tags,
-        category_name: state => state.category.tag_name
+        count: state => state.category.count
       })
     },
     watch: {
       '$route' (to, from) {
+        console.log(to, from)
         if (to.name === 'tag') {
-          console.log(to)
-          this.$store.dispatch('GET_CATEGORY', { id: this.$route.params.id })
+          this.$store.dispatch('GET_ARTICLES', { tags: this.$route.params.id })
         }
       }
     },

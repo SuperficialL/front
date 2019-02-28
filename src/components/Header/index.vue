@@ -1,19 +1,11 @@
 <template>
   <header class="header">
-    <div class="logo">
-      <h1>
-        Superficial Blog
-        <small>个人博客</small>
-      </h1>
-      <i class="icon icon-ego-menu" @click="showMenu"></i>
-      <i class="el-icon-search" @click="showSearch"></i>
-    </div>
     <div class="header-inner">
       <nav class="nav-wrapper" :class="{show: isShowNav}">
         <ul class="nav-menu">
           <li class="nav-item">
             <router-link
-              :to="{name: 'home'}"
+              to="/"
               exact
             >
               首页
@@ -21,22 +13,22 @@
           </li>
           <li class="nav-item"
               v-for="root in navigationLink"
-              :key="root.id"
-          >
+              :key="root.id">
             <router-link
-              :to="{name: 'category', params: { id: root.id } }"
+              :to="{name:'categories', params:{id: root.id,title: root.name,description: root.description} }"
             >
               {{ root.name }}
+              <i class="icon icon-xiangxia" v-if="root.sub_cat.length !== 0"></i>
             </router-link>
-            <ul class="sub-menu" v-if="root.sub_cat.length">
+            <ul class="sub-menu" v-if="root.sub_cat.length !== 0">
               <li class="sub-item"
-                  v-for="sub_cat in root.sub_cat"
-                  :key="sub_cat.id"
-              >
+                  v-for="child in root.sub_cat"
+                  :key="child.id">
                 <router-link
-                  :to="{name: 'category',params: { id:sub_cat.id } }"
+                  :to="{name:'categories', params:{id: child.id,title: child.name,description: child.description} }"
+                  exact
                 >
-                  {{ sub_cat.name }}
+                  {{ child.name }}
                 </router-link>
               </li>
             </ul>
@@ -49,7 +41,7 @@
                @keyup.enter="search"
                placeholder="请输入关键字"
         >
-        <i class="el-icon-search"></i>
+        <i class="el-icon-search" @click="search"></i>
       </div>
     </div>
   </header>
@@ -62,23 +54,23 @@
     name: 'Header',
     data () {
       return {
-        Index: 0,
-        isActive: true,
         keywords: '',
         isShowNav: false,
         isShowSearch: false
       }
-    },
-    created() {
-      this.$store.dispatch('GET_MENU')
     },
     computed: {
       ...mapState({
         navigationLink: state => state.base.navigationLink
       })
     },
+    created () {
+      this.$store.dispatch('GET_MENU', { category_type: 1 })
+    },
     methods: {
       search () {
+        // 查询
+        this.$router.push({ name: 'search', query: { search: this.keywords } })
       },
       showMenu () {
         // 显示隐藏手机端菜单
@@ -103,18 +95,7 @@
   .header {
     position: relative;
     width: 100%;
-    background-color: #fff;
-    .logo {
-      h1 {
-        height: 60px;
-        line-height: 60px;
-        color: #f60;
-        text-align: center;
-      }
-      i {
-        display: none;
-      }
-    }
+    background-color: #1C2327;
     .header-inner {
       display: flex;
       justify-content: space-between;
@@ -135,11 +116,6 @@
             position: relative;
             align-items: center;
             transition: all .5s ease-in-out;
-            &:hover {
-              .sub-menu {
-                display: block;
-              }
-            }
             .sub-menu {
               display: none;
               position: absolute;
@@ -147,34 +123,30 @@
               left: 50%;
               width: 150px;
               z-index: 999;
-              border: 1px solid #ccc;
+              background-color: #1C2327;
               transform: translateX(-50%);
               text-align: center;
-              &:before {
-                content: '';
-                position: absolute;
-                top: 1px;
-                border: {
-                  width: 5px;
-                  style: solid;
-                  color: transparent transparent red transparent;
-                }
-              }
               .sub-item {
                 &:hover {
-                background-color: skyblue;
-              }
+                  background-color: skyblue;
+                }
                 a {
                   display: block;
                   padding: 10px;
                 }
               }
             }
-            & > a {
+            &:hover {
+              .sub-menu {
+                display: block;
+              }
+            }
+            a {
               padding: 5px 15px;
+              color: #fff;
             }
             .active {
-              background-color: $background-color;
+              color: $link-color;
             }
           }
         }

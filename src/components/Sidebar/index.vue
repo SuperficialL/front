@@ -11,7 +11,7 @@
       </div>
       <ul class="content">
         <li class="item">
-          <a class="benbo" href="#" target="_blank">
+          <a class="benbo" v-if="blogInfo" :href="blogInfo.github" target="_blank">
             <i class="icon icon-github"></i>
             <span>Github</span>
           </a>
@@ -52,7 +52,9 @@
             v-for="(item,index) in tags"
             :key="index"
         >
-          <router-link :to="{name: 'tag',params: {id:item.id} }">{{ item.name }}</router-link>
+          <router-link :to="{name: 'tag',params: {id:item.id, title: item.name, description: item.description} }">
+            {{ item.name }}
+          </router-link>
         </li>
       </ul>
     </div>
@@ -68,7 +70,7 @@
       </div>
       <ul class="content">
         <li v-for="(item,index) in friendLink" :key="index">
-          <img :src="item.logo">
+          <!--<img :src="item.logo">-->
           <a :href="item.link" title="item.description" target="_blank">
             {{ item.name }}
           </a>
@@ -86,7 +88,8 @@
     computed: {
       ...mapState({
         friendLink: state => state.base.friendLink,
-        tags: state => state.base.tags
+        tags: state => state.base.tags,
+        blogInfo: state => state.base.blogInfo
       })
     }
   }
@@ -94,12 +97,13 @@
 
 <style lang="scss" scoped>
   .sidebar {
-    width: 330px;
+    width: 300px;
     .widget {
       margin-bottom: 20px;
       padding: 10px;
       border-radius: 3px;
-      border: 1px solid #ccc;
+      /*border: 1px solid #ccc;*/
+      background-color: #fff;
       box-sizing: border-box;
       &:last-child {
         margin-bottom: 0;
@@ -147,8 +151,13 @@
           display: flex;
           flex-wrap: wrap;
           .tag {
-            margin: 10px 5px 0 0;
+            margin: 0 5px 10px 0;
             padding: 3px 6px;
+            border-radius: 5px;
+            transition: all .3s;
+            &:hover {
+              border-radius: 0;
+            }
             &.color-1 {
               background: #f3a683;
             }

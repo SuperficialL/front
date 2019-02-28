@@ -1,54 +1,49 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import Home from './pages/Home'
+import Home from './pages/home/index'
 import Detail from './pages/detail'
 import Category from './pages/category'
-import Tag from './pages/tags'
+import Tag from './pages/tag'
+import search from './pages/search'
+import Loading from './components/Loading'
 
 Vue.use(Router)
 
 const router = new Router({
-  // mode: 'history',
+  mode: 'history',
   base: process.env.baseUrl,
-  // linkActiveClass: 'active',
+  linkActiveClass: 'active',
   linkExactActiveClass: 'active',
   routes: [
     {
+      name: 'index',
       path: '/',
-      name: 'home',
-      component: Home,
-      meta: {
-        keepAlive: false,
-        isShowLoading: true
-      }
+      component: Home
     },
     {
-      path: '/category/:id',
-      name: 'category',
-      component: Category,
-      meta: {
-        keepAlive: false,
-        isShowLoading: false
-      }
+      name: 'categories',
+      path: '/categories/:id',
+      component: Category
     },
     {
-      path: '/tag/:id',
       name: 'tag',
-      component: Tag,
-      meta: {
-        keepAlive: false,
-        isShowLoading: false
-      }
+      path: '/tag/:id',
+      component: Tag
     },
     {
-      path: '/detail/:id',
+      name: 'loading',
+      path: 'loading',
+      component: Loading
+    },
+    {
       name: 'detail',
-      component: Detail,
-      meta: {
-        keepAlive: false,
-        isShowLoading: false
-      }
+      path: '/detail/:id',
+      component: Detail
+    },
+    {
+      name: 'search',
+      path: 'search',
+      component: search
     }
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -60,12 +55,9 @@ const router = new Router({
 })
 
 // 路由全局拦截-进入页面前
-/* router.beforeEach((to, from, next) => {
-  to.meta.isShowLoading
-  next()
-
-  // 设置页面标题
-  document.title = to.meta.title || 'vue-cli 3.x'
-}) */
+ router.beforeEach((to, from, next) => {
+   // console.log(to.params)
+   next()
+})
 
 export default router

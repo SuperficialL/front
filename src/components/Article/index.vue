@@ -1,6 +1,6 @@
 <template>
-  <transition-group tag="section" class="article-list-wrapper">
-    <article class="article"
+    <section class="article-list-wrapper">
+      <article class="article"
              v-for="article in articleList"
              :key="article.id"
     >
@@ -22,7 +22,7 @@
           <div class="meta">
               <span>
                 <i class="icon icon-fenlei"></i>
-                {{ article.parent_category }}
+                {{ article.category }}
               </span>
             <span>
                 <i class="icon icon-shijian"></i>
@@ -33,8 +33,8 @@
                 {{ article.views }}
               </span>
             <span>
-                <i class="icon icon-subscribe-1-copy"></i>
-                {{ article.counts }}
+                <i class="icon icon-pinglun3"></i>
+                {{ article.comment_counts }}
               </span>
           </div>
           <router-link :to="{ name: 'detail',params: { id: article.id } }">
@@ -43,12 +43,16 @@
         </div>
       </div>
     </article>
-  </transition-group>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="articleList.length">
+      </el-pagination>
+    </section>
 </template>
 
 <script>
   import { mapState } from 'vuex'
-  import store from '@/store/store'
   import { dateFormat } from '@/utils/dateFormat'
 
   export default {
@@ -58,21 +62,6 @@
         articleList: state => state.category.articleList
       })
     },
-    watch: {
-      '$route' (to, from) {
-        if (to.name !== 'home') {
-          store.dispatch('GET_CATEGORY', { id: this.$route.params.id })
-        } else {
-          store.dispatch('GET_CATEGORY')
-        }
-      }
-    },
-    methods: {
-      // ...mapActions(['getArticleList'])
-    },
-    created () {
-      // this.getArticleList()
-    },
     filters: {
       dateFormat
     }
@@ -81,24 +70,14 @@
 
 <style lang="scss" scoped>
   .article-list-wrapper {
-    .v-enter, .v-leave-to {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    .v-leave-to {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    .v-enter-active, .v-leave-active {
-      transition: all 2.6s ease-in-out;
-    }
+    margin-top: 20px;
     .article {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #ccc;
       margin-bottom: 20px;
       padding: 10px;
+      background-color: #fff;
       transition: all .4s ease;
       &:last-child {
         margin-bottom: 0;
@@ -149,8 +128,10 @@
           margin-top: 10px;
           font-size: 12px;
           .meta {
+            color: #999;
             span {
               margin-right: 12px;
+              vertical-align: middle;
             }
           }
         }
@@ -195,7 +176,6 @@
               padding: 10px 0;
               border-radius: 6px;
               text-align: center;
-              /*color: #fff;*/
               background-color: #eee;
             }
           }

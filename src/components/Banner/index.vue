@@ -13,7 +13,7 @@
 
   export default {
     name: 'Banner',
-    computed: {
+     computed: {
       ...mapState({
         bannerList: state => state.base.bannerList
       })
@@ -26,7 +26,6 @@
   .slide {
     max-width: 100%;
     overflow: hidden;
-    border: 1px solid #ccc;
     img {
       width: 100%;
       height: 100%;

@@ -2,9 +2,10 @@
   <div id="app">
     <Header></Header>
     <Loading v-if="isLoading"></Loading>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <!--<keep-alive>-->
+    <!--<router-view v-if="$route.meta.keepAlive"></router-view>-->
+    <!--</keep-alive>-->
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
     <Footer></Footer>
   </div>
 </template>
@@ -17,6 +18,8 @@
 
   export default {
     name: 'App',
+    created () {
+    },
     computed: {
       ...mapGetters(['isLoading'])
     },

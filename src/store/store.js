@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import single from './modules/single'
+import article from './modules/article'
 import base from './modules/base'
 import category from './modules/category'
 Vue.use(Vuex)
@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     base,
-    single,
+    article,
     category
   }
 })

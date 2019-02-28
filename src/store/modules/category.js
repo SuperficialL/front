@@ -1,26 +1,26 @@
-import API from '@/api/index'
+import API from '@/api'
 
 const state = {
-  category_name: '',
   articleList: [],
   page: 1,
-  category: null,
-  count: null
+  count: Number,
+  description: String
 }
 
 const mutations = {
   UPDATE_ARTICLES (state, data) {
-    state.articleList = data.article_list
-    state.category_name = data.name
-    // state.count = data.article_list.length
+    state.articleList = data.results
+    state.count = data.results.length
+    state.description = data
   }
 }
 
 const actions = {
   // 获取文章列表信息
-  GET_CATEGORY ({ commit, state }, params) {
+  GET_ARTICLES ({ commit, state }, params) {
     return new Promise((resolve, reject) => {
-      API.getCategory(params).then((data) => {
+      API.getArticles(params).then((data) => {
+        console.log(data)
         commit('UPDATE_ARTICLES', data)
         resolve(data)
       }).catch((error) => {

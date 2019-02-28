@@ -2,23 +2,15 @@
   <section class="main">
     <div class="container">
       <div class="content-wrapper">
-        <div class="content-wrapper">
-          <div class="breadcrumb">
-            <router-link :to="{path: '/'}">首页</router-link>
-            <router-link :to="{path: '/'}">首页</router-link>
-            <router-link :to="{path: '/'}">首页</router-link>
-            <span>{{ article.title }}</span>
-          </div>
-        </div>
         <article class="article">
           <div class="article-header">
             <h3 class="title">
               {{ article.title }}
             </h3>
-            <div class="mate">
+            <div class="meta">
               <span>
                 <i class="icon icon-fenlei"></i>
-                {{ article.parent_category }}
+                {{ article.category }}
               </span>
               <span>
                 <i class="icon icon-fenlei"></i>
@@ -33,8 +25,8 @@
                 {{ article.views }}
               </span>
               <span>
-                <i class="icon icon-subscribe-1-copy"></i>
-                {{ article.counts }}
+                <i class="icon icon-pinglun"></i>
+                {{ article.comment_counts }}
               </span>
             </div>
           </div>
@@ -45,60 +37,74 @@
                 {{ article.digest }}
               </p>
             </fieldset>
-            <div class="detail" v-html="article.body" v-highlight>
+            <div class="detail" v-html="article.formatted_body" v-highlight>
             </div>
-            <!--<div class="pager">
-              <router-link :to="{name:'Detail', params:{ id: $route.params.id }}">
-                <i class="icon icon-prev"></i>
-                上一篇:Vue
-              </router-link>
-              <router-link :to="{name:'Detail', params:{ id: $route.params.id }}">
-                <i class="icon icon-prev"></i>
-                上一篇:Vue
-              </router-link>
-            </div>-->
           </div>
         </article>
+        <div class="pager">
+          <p class="previous">
+            上一篇 :
+            <router-link
+              v-if="article.previous"
+              :to="{name:'detail',params: {id:article.previous.id}}"
+              :title="article.previous.title"
+            >
+              {{ article.previous.title }}
+            </router-link>
+            <span v-else>已经是第一篇文章了!</span>
+          </p>
+          <p class="next">
+            下一篇 :
+            <router-link
+              v-if="article.next"
+              :to="{name:'detail',params: {id:article.next.id}}"
+              :title="article.previous.title"
+            >
+              {{ article.next.title }}
+            </router-link>
+            <span v-else>已经是最后一篇文章了!</span>
+          </p>
+        </div>
+        <AuthorArea></AuthorArea>
+        <Comment></Comment>
       </div>
       <Sidebar></Sidebar>
     </div>
   </section>
 </template>
+
 <script>
   import Sidebar from '@/components/Sidebar'
+  import Comment from '@/components/Comment'
+  import AuthorArea from '@/components/AuthorArea/AuthorArea'
   import { mapState } from 'vuex'
   import { dateFormat } from '@/utils/dateFormat'
 
   export default {
     name: 'detail',
-    data () {
-      return {
-        id: this.$route.params.id
-      }
-    },
     created () {
-      this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.id })
+      this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.$route.params.id })
     },
     computed: {
       ...mapState({
-        article: state => state.single.article
+        article: state => state.article.article
       })
     },
     watch: {
-       '$route' () {
-        this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.id })
+      '$route' () {
+        this.$store.dispatch('GET_ARTICLE_DETAIL', { id: this.$route.params.id })
       }
     },
-    methods: {},
     components: {
-      Sidebar
+      Sidebar,
+      Comment,
+      AuthorArea
     },
     filters: {
       dateFormat
     }
   }
 </script>
-
 <style lang="scss" scoped>
   .main {
     flex: 1 0 auto;
@@ -110,15 +116,18 @@
       margin: 0 auto;
       .content-wrapper {
         width: 900px;
-        background-color: #f4f4f4;
+        padding: 15px;
+        background-color: #fff;
         .article {
-          padding: 15px;
           .article-header {
             padding: 10px 10px 5px;
             text-align: center;
             border-bottom: 1px solid red;
-            h3 {
+            .title {
               margin: 5px 0;
+            }
+            .meta {
+              color: #999;
             }
           }
           .article-content {
@@ -127,23 +136,17 @@
               padding: 10px 20px;
               border: 1px dashed #ddd;
             }
-            .detail {
-            }
-            .pager {
-              display: flex;
-              margin: 20px 0;
-              justify-content: space-between;
-              a {
-                padding: 5px 15px;
-                color: #099;
-                &:hover {
-                  color: red;
-                }
-              }
-            }
           }
-          .article-footer {
-
+        }
+        .pager {
+          display: flex;
+          margin: 20px 0;
+          justify-content: space-between;
+          a {
+            color: #099;
+            &:hover {
+              color: red;
+            }
           }
         }
       }

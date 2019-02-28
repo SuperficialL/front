@@ -9,14 +9,13 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "axios-mock-adapter": "^1.15.0",
+    "babel-plugin-prismjs": "^1.0.2",
     "element-ui": "^2.4.11",
-    "highlight.js": "^9.13.1",
-    "mockjs": "^1.0.1-beta3",
+    "prismjs": "^1.15.0",
+    "qs": "latest",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "qs": "latest"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
