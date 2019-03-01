@@ -76,6 +76,7 @@
 
   export default {
     name: 'Comment',
+    inject: ['reload'],
     data () {
       return {
         comments: [],
@@ -169,11 +170,11 @@
           API.postComment(data).then((response) => {
             // 提交评论
             console.log(response)
+            this.reload()
             this.content.value = ''
             this.author.value = ''
             this.email.value = ''
             this.url.value = ''
-            window.reload()
           }).catch((error) => {
             console.log(error)
           })
