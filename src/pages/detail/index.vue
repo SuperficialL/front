@@ -2,7 +2,7 @@
   <section class="main">
     <div class="container">
       <div class="content-wrapper">
-        <article class="article">
+        <article class="article" v-if="article">
           <div class="article-header">
             <h3 class="title">
               {{ article.title }}
@@ -42,28 +42,31 @@
           </div>
         </article>
         <div class="pager">
-          <p class="previous">
-            上一篇 :
-            <router-link
-              v-if="article.previous"
-              :to="{name:'detail',params: {id:article.previous.id}}"
-              :title="article.previous.title"
-            >
-              {{ article.previous.title }}
-            </router-link>
-            <span v-else>已经是第一篇文章了!</span>
-          </p>
-          <p class="next">
-            下一篇 :
-            <router-link
-              v-if="article.next"
-              :to="{name:'detail',params: {id:article.next.id}}"
-              :title="article.previous.title"
-            >
-              {{ article.next.title }}
-            </router-link>
-            <span v-else>已经是最后一篇文章了!</span>
-          </p>
+          <div class="previous">
+            <p v-if="article.previous.id">
+              上一篇 :
+              <router-link
+                :to="{name:'detail',params: {id:article.previous.id}}"
+                :title="article.previous.title"
+              >
+                {{ article.previous.title }}
+              </router-link>
+            </p>
+            <p v-else>已经是第一篇文章了!</p>
+          </div>
+          <div class="next">
+            <p v-if="article.next.id">
+              下一篇 :
+              <router-link
+                v-if="article.next"
+                :to="{name:'detail',params: {id:article.next.id}}"
+                :title="article.previous.title"
+              >
+                {{ article.next.title }}
+              </router-link>
+            </p>
+            <p v-else>已经是最后一篇文章了!</p>
+          </div>
         </div>
         <AuthorArea></AuthorArea>
         <Comment></Comment>
@@ -87,7 +90,7 @@
     },
     computed: {
       ...mapState({
-        article: state => state.article.article
+        article: state => state.single.article
       })
     },
     watch: {
